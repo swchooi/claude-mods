@@ -1,0 +1,7 @@
+{
+  "name": "session-meter",
+  "version": "0.2.0",
+  "description": "Coloured band above the prompt: context, room before auto-compact, 5h and 7d limits, cost",
+  "author": { "name": "chooi" },
+  "types": "./types/index.d.ts"
+}

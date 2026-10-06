@@ -1,0 +1,12 @@
+{
+  "name": "chooi-mods",
+  "owner": { "name": "chooi" },
+  "plugins": [
+    {
+      "name": "session-meter",
+      "source": "./plugins/session-meter",
+      "description": "Coloured band above the prompt: context, room before auto-compact, 5h and 7d limits, cost",
+      "version": "0.2.0"
+    }
+  ]
+}
