@@ -1,4 +1,4 @@
-# chooi-mods
+# claude-mods
 
 A Claude Code plugin marketplace with one plugin:
 
@@ -7,10 +7,8 @@ A Claude Code plugin marketplace with one plugin:
 
 ## Install
 
-Unzip this folder somewhere permanent (Claude Code reads the plugin from here), then run:
-
 ```bash
-claude plugin marketplace add "<path to this folder>"
+claude plugin marketplace add swchooi/claude-mods
 claude plugin install session-meter@chooi-mods
 ```
 
