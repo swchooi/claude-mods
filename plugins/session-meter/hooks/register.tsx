@@ -1,4 +1,4 @@
-import type { Engine, Register, SessionContextUsage, SessionRateLimit, SessionCost } from 'claude-code'
+import type { EngineInterface as Engine, Register, SessionContextUsage, SessionRateLimit, SessionCost } from 'claude-code'
 
 import type { Limit, Meter } from '../types'
 
@@ -17,6 +17,40 @@ const usedColor = (pct: number) => (pct >= 90 ? RED : pct >= 70 ? AMBER : GREEN)
 const leftColor = (pct: number) => (pct <= 10 ? RED : pct <= 25 ? AMBER : GREEN)
 
 const trim = (s: string) => s.replace(/\.0$/, '')
+
+// USD -> MYR: a live rate fetched at most once a day and kept in the store across
+// sessions; the last good rate (or a rough default) stands in when offline.
+const RATE_URL = 'https://open.er-api.com/v6/latest/USD'
+const RATE_KEY = 'usdMyr'
+const RATE_TTL = 24 * 60 * 60 * 1000
+const FALLBACK_RATE = 4.1
+
+type Rate = { rate: number; at: number }
+
+let rateCache: Rate | undefined
+
+async function usdToMyr($: Engine): Promise<number> {
+  const now = await $.clock.now()
+  if (rateCache && now - rateCache.at < RATE_TTL) return rateCache.rate
+
+  const stored = (await $.store.get(RATE_KEY)) as Rate | undefined
+  if (stored && now - stored.at < RATE_TTL) return (rateCache = stored).rate
+
+  try {
+    const res = await $.http.fetch(RATE_URL)
+    const rate = res.ok ? JSON.parse(res.text)?.rates?.MYR : undefined
+    if (typeof rate === 'number' && rate > 0) {
+      rateCache = { rate, at: now }
+      await $.store.set(RATE_KEY, rateCache)
+      return rate
+    }
+  } catch {
+    // offline or blocked: fall through to the last known rate
+  }
+  // Retry no sooner than an hour from now.
+  rateCache = { rate: stored?.rate ?? FALLBACK_RATE, at: now - RATE_TTL + 60 * 60 * 1000 }
+  return rateCache.rate
+}
 
 const k = (n: number) =>
   n >= 1_000_000 ? `${trim((n / 1_000_000).toFixed(1))}M` : n >= 1000 ? `${trim((n / 1000).toFixed(1))}k` : `${n}`
@@ -53,7 +87,7 @@ async function measure($: Engine, f: Figures): Promise<Meter> {
     window,
     compactLeft,
     limits: [...byKind('five_hour', '5h'), ...byKind('seven_day', '7d')],
-    costUsd: f.cost?.usd,
+    costMyr: f.cost?.usd === undefined ? undefined : f.cost.usd * (await usdToMyr($)),
   }
 }
 
@@ -108,10 +142,10 @@ export const register: Register = on => {
               <Text dimColor>{resetsIn(l.resetsAt, now)}</Text>
             </Text>
           ))}
-          {m.costUsd !== undefined ? (
+          {m.costMyr !== undefined ? (
             <Text>
               {sep}
-              <Text>${m.costUsd.toFixed(2)}</Text>
+              <Text>≈RM{m.costMyr.toFixed(2)}</Text>
             </Text>
           ) : null}
         </Text>

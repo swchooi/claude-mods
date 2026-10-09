@@ -4,7 +4,7 @@ My collection of Claude-related things: plugins, skills, MCP setups, mods and pr
 
 | path | what it is |
 |---|---|
-| [plugins/session-meter](plugins/session-meter) | Claude Code plugin: a coloured band above the prompt showing context tokens, room left before auto-compact, 5-hour and 7-day usage limits with reset times, and session cost |
+| [plugins/session-meter](plugins/session-meter) | Claude Code plugin: a coloured band above the prompt showing context tokens, room left before auto-compact, 5-hour and 7-day usage limits with reset times, and session cost in MYR (estimated from a daily USD→MYR rate) |
 | [animation](animation) | Hand-painted cartoon kit for Claude Code (from [ClaudeAnimationBase](https://github.com/JohnHeibel/ClaudeAnimationBase)), with the short "The Last Leaf" |
 
 ## session-meter
