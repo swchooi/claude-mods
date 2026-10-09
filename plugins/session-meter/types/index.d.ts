@@ -6,7 +6,8 @@ export type Meter = {
   // % of room left before auto-compact; null when auto-compact is off
   compactLeft?: number | null
   limits: Limit[]
-  costUsd?: number
+  // session cost converted to MYR at an estimated rate
+  costMyr?: number
 }
 
 declare module 'claude-code' {
