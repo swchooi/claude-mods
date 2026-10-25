@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(python tools/docs_audit.py:*)",
+      "Bash(python .claude/hooks/test_block_destructive.py)"
+    ],
+    "deny": [
+      "Edit(reference/**)",
+      "Write(reference/**)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./**/.env)",
+      "Read(./**/.env.*)",
+      "Read(./secrets/**)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git reset --hard:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PY=$(command -v python || command -v python3); \"${PY:-python}\" \"$CLAUDE_PROJECT_DIR/.claude/hooks/block_destructive.py\"; rc=$?; if [ $rc -ne 0 ] && [ $rc -ne 2 ]; then echo \"block_destructive hook could not run (exit $rc); blocking to be safe\" >&2; fi; [ $rc -eq 0 ] || exit 2"
+          }
+        ]
+      }
+    ]
+  }
+}

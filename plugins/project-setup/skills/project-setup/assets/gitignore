@@ -1,0 +1,32 @@
+# --- Secrets: only the example env file is committed ---
+.env
+.env.*
+!.env.example
+secrets/
+
+# --- Claude Code: personal and temporary ---
+.claude/settings.local.json
+.claude/worktrees/
+
+# --- Private or live data (add this project's paths) ---
+# *.xlsx
+# data/
+# reports/
+
+# --- Intermediates that quote prompts or hold large renders ---
+# artifacts/*/work/
+
+# --- Build output and caches ---
+node_modules/
+__pycache__/
+*.pyc
+dist/
+build/
+.cache/
+
+# --- OS and editor ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
