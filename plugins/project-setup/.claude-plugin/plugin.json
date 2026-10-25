@@ -1,6 +1,6 @@
 {
   "name": "project-setup",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Skill for starting a project: a purpose grill, then the agent parts the project needs (CLAUDE.md, docs context structure, skills, sub-agents, limits and hooks, session loop, git and GitHub)",
   "author": { "name": "chooi" }
 }
