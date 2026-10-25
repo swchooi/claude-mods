@@ -5,7 +5,7 @@ date: YYYY-MM-DD
 
 # YYYY-MM-DD-NN: <Short title>
 
-<!-- File: docs/sessions/YYYY-MM-DD-NN-slug.md, NN from 01 each day. Append-only:
+<!-- project-setup: file name docs/sessions/YYYY-MM-DD-NN-slug.md, NN from 01 each day. Append-only:
 never rewrite an old report. Write prose, not a commit log: the value is the
 reasoning, which git can't reconstruct. -->
 

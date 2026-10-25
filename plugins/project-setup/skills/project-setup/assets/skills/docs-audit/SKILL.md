@@ -3,7 +3,7 @@ name: docs-audit
 description: Check the docs for drift that is mechanically checkable - docs missing from the index, broken links and heading anchors, IDs (D-NNN, Q-NNN, T-NNN, M-NN) referenced but never defined or defined twice, missing frontmatter, and snapshot docs past their stale_after date. Use after any session that changed docs, after answering questions or recording decisions, at every milestone checkpoint, as the last step of grill, when starting a session after time away, or when the user asks to audit, verify, or check the docs.
 ---
 
-<!-- Template from project-setup. Tailor: the groups this project uses, any
+<!-- project-setup: tailor the groups this project uses, any
 project-specific drift (a source file's as-of date), and the conventions list.
 Remove this comment. -->
 

@@ -3,9 +3,10 @@ name: grill
 description: Stress-test a proposal, plan or design before it becomes a decision, or brainstorm options for an open question, by interrogating it against the project's purpose, its real data and its existing decisions, then interviewing the owner one question at a time. Use when the user says grill, stress-test, challenge, poke holes, red-team, pre-mortem, brainstorm, or asks whether a plan/proposal/design is sound; before recording any decision that would be expensive to reverse; and at every milestone checkpoint.
 ---
 
-<!-- Template from project-setup. Tailor: step 2's ground files, step 1's door
-examples, step 7's record locations, and the project lenses in lenses.md.
-Remove this comment. -->
+<!-- project-setup: tailor step 2's ground files, step 1's door examples,
+step 7's record locations, and the project lenses in lenses.md. If the
+red-team agent isn't installed, replace step 4b with one line: "No red team
+yet; add the agent when <its growth trigger>." Remove this comment. -->
 
 # grill
 
@@ -154,8 +155,8 @@ Only after the owner has given the verdict their OK:
 - Then run `docs-audit` if the project has it.
 
 Finish by telling the owner in a few lines: the verdicts, which findings changed
-the plan, what the red team found that you missed, and which risks they
-accepted.
+the plan, what the red team found that you missed (if it ran), and which risks
+they accepted.
 
 ---
 

@@ -1,4 +1,4 @@
-<!-- Template for project-setup: keep only the rows for files this project has. Remove this comment. -->
+<!-- project-setup: keep only the rows for files this project has. Remove this comment. -->
 # Project docs
 
 These docs are the project's memory. Sessions remember nothing between runs, so
