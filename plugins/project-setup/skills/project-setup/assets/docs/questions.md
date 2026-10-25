@@ -8,7 +8,7 @@ ticks it: only the owner answers. When answered, record the answer where it
 belongs (a decision, or the doc it affects), tick it, and move it to
 **Answered** with a pointer.
 
-<!-- Unattended agent (QUESTIONS.md at the repo root): also record a Provisional
+<!-- project-setup: unattended agent (QUESTIONS.md at the repo root): also record a Provisional
 decision with the recommended default, proceed where reversible, and link it here. -->
 
 ## Open

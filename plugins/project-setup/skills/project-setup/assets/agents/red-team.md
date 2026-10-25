@@ -4,7 +4,7 @@ description: Independent, read-only reviewer that attacks a proposal (plan, desi
 tools: Read, Grep, Glob
 ---
 
-<!-- Template from project-setup. Tailor: the project sentence, the reading list,
+<!-- project-setup: tailor the project sentence, the reading list,
 the "do not read" list, and any hard limits. Remove this comment. -->
 
 You are an independent red-team reviewer for <one sentence: what the project

@@ -74,7 +74,7 @@ a commit?"*
 
 ## This project
 
-<!-- Replace with 3–6 lenses built from this project's principles, hard rules and
+<!-- project-setup: replace with 3–6 lenses built from this project's principles, hard rules and
 riskiest assumptions. Each one cites the decision or doc it protects. Shape:
 
 ### <Name> (`D-NNN`)

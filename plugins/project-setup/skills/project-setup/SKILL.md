@@ -41,9 +41,10 @@ in `assets/` (paths are relative to this skill's folder):
 | `settings.json` | `.claude/settings.json` (keep only the parts chosen) |
 | `gitignore` | `.gitignore` |
 
-Every template has `<placeholders>` and a comment saying what to tailor. None
-is copied as it is: replace every placeholder, delete what doesn't apply, and
-remove the template comment.
+Every template has `<placeholders>` and `<!-- project-setup: … -->` comments
+saying what to tailor. None is copied as it is: replace every placeholder,
+delete what doesn't apply, and remove those comments. Step 5 checks that none
+are left.
 
 ---
 
@@ -133,6 +134,15 @@ written only for Claude.
 - Run the hook tests if a hook was generated.
 - Validate `.claude/settings.json` and `.mcp.json` as JSON.
 - Check every path named in `CLAUDE.md` exists.
+- **No template text is left.** The docs audit can't see this: it ignores code
+  spans and comments, which is where placeholders sit. This must print nothing:
+
+  ```bash
+  grep -rnE '<!-- project-setup|<[^!/>][^>]*( |…)[^>]*>' --include='*.md' CLAUDE.md docs .claude
+  ```
+
+  The first pattern finds guidance comments, the second `<placeholders>`. Fix
+  each hit by tailoring the text, or delete the section if it doesn't apply.
 - `git status`: nothing private is staged or unignored.
 - Commit only if the owner said to (one commit, "Set up project context").
   Push only if they said yes to the remote in step 3.

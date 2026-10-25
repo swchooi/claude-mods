@@ -3,7 +3,7 @@ name: session
 description: Open or close a working session on this project - load the right context at the start, and at the end write the session report and update tasks, context, changelog, decisions and the roadmap. Use when the user says start/open/begin a session, end/close/wrap up a session, or asks what was done this session.
 ---
 
-<!-- Template from project-setup. Tailor: the read order, the files the close
+<!-- project-setup: tailor the read order, the files the close
 updates, and the milestone IDs in the effort line. Remove this comment. -->
 
 # session
