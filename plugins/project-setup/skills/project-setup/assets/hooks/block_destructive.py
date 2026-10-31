@@ -65,6 +65,10 @@ PIPE_DELETE = re.compile(
     re.IGNORECASE,
 )
 
+# `find <paths> ... -delete` / `-exec rm` deletes everything it matches, recursively.
+FIND_CMD = re.compile(rf"(?:^|[\s;&|(])find(?=\s)({SEG})")
+FIND_DELETES = re.compile(r"(^|\s)(-delete|-exec(dir)?\s+(\S*/)?(rm|rmdir|shred|unlink)\b)")
+
 SECRET_RE = re.compile(r"(?<![\w.$-])\.env(\.[\w.-]+)?(?![\w-])|(?<![\w.-])secrets[/\\]")
 
 
@@ -120,9 +124,26 @@ def check_delete(cmd: str) -> str | None:
         tokens = m.group(2).split()
         if not any(RECURSIVE_FLAG.match(t) for t in tokens):
             continue
+        if "{}" in tokens and any(f.start() < m.start() < f.end() for f in FIND_CMD.finditer(cmd)):
+            continue  # rm inside `find -exec`: check_find judges the find's paths
         targets = [t for t in tokens if not t.startswith("-") and not WIN_SWITCH.match(t)]
         if not targets or not all(is_safe_target(t) for t in targets):
             return f"recursive delete ({m.group(1)}) outside build/cache/scratchpad directories"
+    return None
+
+
+def check_find(cmd: str) -> str | None:
+    for m in FIND_CMD.finditer(cmd):
+        rest = m.group(1)
+        if not FIND_DELETES.search(rest):
+            continue
+        paths = []
+        for t in rest.split():
+            if t.startswith(("-", "(", "!")):
+                break
+            paths.append(t)
+        if not paths or not all(is_safe_target(t) for t in paths):
+            return "find with -delete or -exec rm outside build/cache/scratchpad directories"
     return None
 
 
@@ -133,7 +154,7 @@ def check_secrets(cmd: str) -> str | None:
 
 
 def reason_to_block(cmd: str, cwd: str = ".") -> str | None:
-    return check_git(cmd) or check_discard(cmd, cwd) or check_delete(cmd) or check_secrets(cmd)
+    return check_git(cmd) or check_discard(cmd, cwd) or check_delete(cmd) or check_find(cmd) or check_secrets(cmd)
 
 
 def main() -> int:

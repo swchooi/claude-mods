@@ -1,0 +1,6 @@
+{
+  "name": "theme-designer",
+  "version": "0.1.0",
+  "description": "Skill for designing an app or website theme: a short interview, three visual options per layer (colours, containers and motion, type, icons, density), packaged as a reusable CSS theme",
+  "author": { "name": "chooi" }
+}

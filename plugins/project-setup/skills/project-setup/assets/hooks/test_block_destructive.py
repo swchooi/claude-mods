@@ -2,6 +2,7 @@
 """Tests for block_destructive.py, including the exact wiring in .claude/settings.json.
 
 Run: python .claude/hooks/test_block_destructive.py
+(Also runs from the project-setup skill's assets/hooks/, against the settings.json template.)
 """
 from __future__ import annotations
 
@@ -13,6 +14,10 @@ from pathlib import Path
 
 HOOK = Path(__file__).with_name("block_destructive.py")
 REPO = HOOK.parent.parent.parent
+# Inside the project-setup skill (not a generated project), assets/ stands in for the project root.
+TEMPLATE = not (REPO / ".claude" / "settings.json").exists()
+if TEMPLATE:
+    REPO = HOOK.parent.parent
 
 BLOCK = [
     # force-push / remote deletion
@@ -38,6 +43,14 @@ BLOCK = [
     "git checkout .",
     "git checkout -f main",
     "git checkout HEAD -- docs/",
+    # find that deletes
+    "find . -delete",
+    "find . -name '*.tmp' -delete",
+    "find src -name x -exec rm {} +",
+    "find . -type f -execdir rm -f {} \\;",
+    "find -name x -delete",
+    "find build ../src -delete",
+    "ls | xargs -I{} rm -rf {}",
     "git checkout -- docs",
     "git switch -f main",
     "git switch --discard-changes main",
@@ -130,6 +143,10 @@ ALLOW = [
     "Remove-Item -Recurse -Force build",
     "Remove-Item -Recurse G:\\TEMP\\claude\\proj\\scratchpad\\x",
     "Get-ChildItem docs -Recurse | Select-String Q-001",
+    "find . -name '*.md'",
+    "find build -name '*.o' -delete",
+    "find node_modules -type d -name .cache -exec rm -rf {} +",
+    "find . -name x -exec grep -l rm {} +",
     "python tools/docs_audit.py --quiet",
     "grep -rf patterns.txt docs",
     "grep -r process.env src",
@@ -152,9 +169,13 @@ def wiring_tests() -> list[str]:
     bash = shutil.which("bash")
     if not bash or "system32" in bash.lower():
         return ["SKIP wiring: no POSIX bash on PATH (WSL bash is not used for hooks)"]
-    settings = json.loads((REPO / ".claude" / "settings.json").read_text(encoding="utf-8"))
+    settings_path = REPO / ("settings.json" if TEMPLATE else ".claude/settings.json")
+    settings = json.loads(settings_path.read_text(encoding="utf-8"))
     commands = [h["command"] for entry in settings["hooks"]["PreToolUse"]
                 if "Bash" in entry["matcher"] for h in entry["hooks"]]
+    if TEMPLATE:
+        commands = [c.replace("$CLAUDE_PROJECT_DIR/.claude/hooks/block_destructive.py", str(HOOK))
+                    for c in commands]
     if len(commands) != 1:
         return [f"wiring: expected 1 Bash PreToolUse hook, found {len(commands)}"]
     hook_cmd = commands[0]

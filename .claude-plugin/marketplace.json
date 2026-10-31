@@ -12,7 +12,13 @@
       "name": "project-setup",
       "source": "./plugins/project-setup",
       "description": "Skill for starting a project: a purpose grill, then the agent parts the project needs (CLAUDE.md, docs context structure, skills, sub-agents, limits and hooks, session loop, git and GitHub)",
-      "version": "0.1.1"
+      "version": "0.1.2"
+    },
+    {
+      "name": "theme-designer",
+      "source": "./plugins/theme-designer",
+      "description": "Skill for designing an app or website theme: a short interview, three visual options per layer (colours, containers and motion, type, icons, density), packaged as a reusable CSS theme",
+      "version": "0.1.0"
     }
   ]
 }
